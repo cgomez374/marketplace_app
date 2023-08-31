@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1>Sell Your Random Stuff</h1>
+<main class="container col">
+    <ul class="sub-container row">
+        {% for product in products %}
+        <li class="col">
+            <img src="{{ product['image_url'] }}" alt="product image">
+            <h4>{{ product.name }}</h4>
+            <p>{{ product.price }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</main>
+
+{% endblock %}

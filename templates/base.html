@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/styles.css">
+    <title>Sell Your Random Stuff</title>
+</head>
+<body>
+    <nav id="nav" class="nav">
+        <ul class="row">
+            <li><a href="{{ url_for('main') }}">Home</a></li>
+            <li><a href="{{ url_for('login') }}">Merchant Login</a></li>
+            <li><a href="{{ url_for('signup') }}">Merchant Signup</a></li>
+            <li><a href="{{ url_for('cart') }}">Cart</a></li>
+        </ul>
+    </nav>
+
+    <!--  MAIN CONTENT  -->
+    {% block main %}{% endblock %}
+
+</body>
+</html>
