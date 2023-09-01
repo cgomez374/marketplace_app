@@ -21,3 +21,10 @@ class Merchant(db.Model):
     # CHECK_PASSWORD
     def check_password(self, password_to_check):
         return check_password_hash(pwhash=self.hashed_password, password=password_to_check)
+
+# NEED TO FIGURE OUT HOW TO UPLOAD AND SAVE IMAGES
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), index=True, unique=False, nullable=False)
+    price = db.Column(db.Integer, index=False, unique=False, nullable=False)
+    category = db.Column(db.String(100), index=False, unique=False, nullable=False)

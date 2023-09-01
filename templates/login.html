@@ -3,6 +3,13 @@
 {% block main %}
 
 <h1>LOGIN</h1>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="col">
+        <p>{{ messages[0] }}</p>
+    </div>
+    {% endif %}
+{% endwith %}
 
 <form action="#" method="POST" class="form container col">
     <!--  LOGIN  -->
@@ -10,6 +17,7 @@
     <input type="email" placeholder="email" name="email">
     <label for="password">password:</label>
     <input type="password" placeholder="password" name="password">
+    <button>submit</button>
 </form>
 
 {% endblock %}
