@@ -1,0 +1,11 @@
+{% extends "base.html"%}
+
+{% block main %}
+
+<h1>Welcome, {{ current_user.name.title() }}!</h1>
+<ul>
+    <li>Email: {{ current_user.email }}</li>
+    <li>Member since: {{ current_user.date_joined }}</li>
+</ul>
+
+{% endblock %}
