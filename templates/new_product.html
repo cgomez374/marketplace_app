@@ -3,10 +3,17 @@
 {% block main %}
 
 <h1>upload new product</h1>
-<form action="#" method="POST">
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="col">
+        <p>{{ messages[0] }}</p>
+    </div>
+    {% endif %}
+{% endwith %}
+<form action="{{ url_for('new_product') }}" method="POST" enctype="multipart/form-data">
 <!--    NAME-->
     <label for="product_name">Enter product name:</label>
-    <input type="text" id="product_name" name="product name" placeholder="Product name" required>
+    <input type="text" id="product_name" name="product_name" placeholder="Product name" required>
     <br>
 <!--    PRICE-->
     <label for="product_price">Enter product price:</label>

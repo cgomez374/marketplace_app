@@ -3,12 +3,22 @@
 {% block main %}
 
 <h1>product manager</h1>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="col">
+        <p>{{ messages[0] }}</p>
+    </div>
+    {% endif %}
+{% endwith %}
 <div>
     <a href="{{ url_for('new_product') }}"><button>new product</button></a>
     {% if merchant_products %}
     <ul>
         {% for product in merchant_products %}
         <li>{{ product.name }}</li>
+        <li>{{ product.price }}</li>
+        <li>{{ product.category }}</li>
+        <li><img src="{{ product.img_url }}" alt="product photo"></li>
         {% endfor %}
     </ul>
     {% else %}

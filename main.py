@@ -1,7 +1,14 @@
+import botocore.exceptions
 from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from models import db, Merchant, Product
 from datetime import datetime
+from sqlalchemy.exc import SQLAlchemyError
+import boto3
+
+# AWS CREDENTIALS
+AWS_ACCESS_KEY = '#'
+AWS_SECRET_KEY = '#'
 
 app = Flask(__name__)
 app.secret_key = 'secret key'
@@ -21,75 +28,37 @@ def load_user(user_id):
     return Merchant.query.get(int(user_id))
 
 
-products = [
-    {
-        'id': 1,
-        'name': 'android phone',
-        'price': 1000,
-        'category': 'smartphone',
-        'image_url': '../static/images/android.jpg'
-    },
-    {
-        'id': 2,
-        'name': 'iphone',
-        'price': 1000,
-        'category': 'smartphone',
-        'image_url': '../static/images/iphone.jpg'
-    },
-    {
-        'id': 3,
-        'name': 'android phone',
-        'price': 1000,
-        'category': 'smartphone',
-        'image_url': '../static/images/android.jpg'
-    },
-    {
-        'id': 4,
-        'name': 'iphone',
-        'price': 1000,
-        'category': 'smartphone',
-        'image_url': '../static/images/iphone.jpg'
-    },
-    {
-        'id': 5,
-        'name': 'android phone',
-        'price': 1000,
-        'category': 'smartphone',
-        'image_url': '../static/images/android.jpg'
-    },
-    {
-        'id': 6,
-        'name': 'iphone',
-        'price': 1000,
-        'category': 'smartphone',
-        'image_url': '../static/images/iphone.jpg'
-    },
-    {
-        'id': 7,
-        'name': 'android phone',
-        'price': 1000,
-        'category': 'smartphone',
-        'image_url': '../static/images/android.jpg'
-    },
-    {
-        'id': 8,
-        'name': 'iphone',
-        'price': 1000,
-        'category': 'smartphone',
-        'image_url': '../static/images/iphone.jpg'
-    }
-]
-
 # ROUTES
 
 def message_display_redirect(message, redirect_to):
     flash(message)
     return redirect(url_for(redirect_to))
 
+
+# UPLOAD TO S3 BUCKET
+def upload_to_s3(file):
+    s3 = boto3.client("s3",
+                      aws_access_key_id=AWS_ACCESS_KEY,
+                      aws_secret_access_key=AWS_SECRET_KEY)
+    bucket_name = "marketplace-product-images-bucket"
+    object_key = f'{current_user.name}/{file.filename}'
+    try:
+        response = s3.head_object(Bucket=bucket_name, Key=object_key)
+        # If the object exists, handle the scenario as needed (e.g., show an error message)
+        return None
+    except Exception as e:
+        # Upload the file to S3
+        s3.upload_fileobj(file, bucket_name, object_key)
+    # Construct the URL of the uploaded file
+    s3_url = f"https://{bucket_name}.s3.amazonaws.com/{object_key}"
+    return s3_url
+
+
 @app.route('/')
 def main():
     # db.drop_all()
-    db.create_all()
+    # db.create_all()
+    products = Product.query.all()
     return render_template('main.html', products=products)
 
 
@@ -118,7 +87,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('main'))
+    return message_display_redirect('Logout successful', 'login')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -139,8 +108,9 @@ def signup():
         try:
             db.session.add(new_merchant)
             db.session.commit()
-        except:
-            message_display_redirect('There was an error creating your account, please try again', 'signup')
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            message_display_redirect(e, 'signup')
         return message_display_redirect('Account Successfully created', 'login')
     return render_template('signup.html')
 
@@ -167,9 +137,36 @@ def view_products():
 @app.route('/new_product', methods=['GET', 'POST'])
 @login_required
 def new_product():
-    if request.method == 'POST':
-        if request.form:
-            print(request.form)
+    if request.method == 'POST' and request.form:
+        product_name = request.form.get('product_name')
+        product_price = request.form.get('product_price')
+        product_category = request.form.get('product_category')
+        product_img = request.files['product_img']
+        image_url = ''
+
+        current_products = Product.query.filter_by(merchant_id=int(current_user.id)).all()
+        for product in current_products:
+            if product.name == product_name:
+                return message_display_redirect('Product name already exists', 'new_product')
+        if product_img:
+            # image_url = upload_to_s3(product_img)
+            image_url = 'https://marketplace-product-images-bucket.s3.amazonaws.com/android.jpg'
+        if not image_url:
+            return message_display_redirect('File name must be unique', 'new_product')
+        elif product_name and product_price and product_category:
+            product_new = Product(name=product_name,
+                                  price=product_price,
+                                  category=product_category,
+                                  img_url=image_url,
+                                  merchant_id=int(current_user.id))
+            try:
+                db.session.add(product_new)
+                db.session.commit()
+            except SQLAlchemyError as e:
+                db.session.rollback()
+                print(str(e))
+                return message_display_redirect('Error adding new product', 'view_products')
+        return message_display_redirect('Successfully added new product!', 'view_products')
     return render_template('new_product.html')
 
 
