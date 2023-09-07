@@ -6,9 +6,11 @@
     <ul class="sub-container row">
         {% for product in products %}
         <li class="col">
-            <img src="{{ product['img_url'] }}" alt="product image">
-            <h4>{{ product.name }}</h4>
-            <p>{{ product.price }}</p>
+            <a href="{{ url_for('product_detail', product_id=product.id) }}">
+                <img src="{{ product['img_url'] }}" alt="product image">
+                <h4>{{ product.name }}</h4>
+                <p>{{ product.price }}</p>
+            </a>
         </li>
         {% endfor %}
     </ul>

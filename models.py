@@ -28,6 +28,7 @@ class Merchant(UserMixin, db.Model):
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), index=True, unique=False, nullable=False)
+    # description = db.Column(db.String(500), index=False, unique=False, nullable=False)
     price = db.Column(db.Integer, index=False, unique=False, nullable=False)
     category = db.Column(db.String(100), index=False, unique=False, nullable=False)
     img_url = db.Column(db.String(300), index=False, unique=True, nullable=False)

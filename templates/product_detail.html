@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1>Product details</h1>
+<div class="container col">
+    <div>
+        <img src="{{ product.img_url }}" alt="product image">
+    </div>
+    <div class="sub-container col">
+        <h2>{{ product.name }}</h2>
+        <p>Add product description</p>
+        <h4>${{ product.price }}</h4>
+        {% if not current_user.is_authenticated %}
+        <div class="row">
+            <button>Add to cart</button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}
