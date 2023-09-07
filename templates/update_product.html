@@ -9,7 +9,7 @@
     </div>
     {% endif %}
 {% endwith %}
-<form action="{{ url_for('update_product', product_id=product.id) }}" method="POST" enctype="multipart/form-data">
+<form class="form container col" action="{{ url_for('update_product', product_id=product.id) }}" method="POST" enctype="multipart/form-data">
     <!--    NAME-->
     <label for="product_name">Enter product name:</label>
     <input type="text"
@@ -35,6 +35,15 @@
            name="product_category"
            placeholder="Change Category"
            value="{{ product.category }}"
+           required>
+    <br>
+    <!--    DESCRIPTION -->
+    <label for="product_description">Enter product description</label>
+    <input type="text"
+           id="product_description"
+           name="product_description"
+           placeholder="Product Description"
+           value="{{ product.description }}"
            required>
     <br>
     <!--    IMG-->

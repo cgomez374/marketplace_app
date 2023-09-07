@@ -1,0 +1,36 @@
+{% extends "base.html"%}
+
+{% block main %}
+
+<h1>Update account</h1>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="col">
+        <p>{{ messages[0] }}</p>
+    </div>
+    {% endif %}
+{% endwith %}
+<form action="{{ url_for('merchant_update') }}" method="POST" class="form container col">
+    <!--  SIGNUP  -->
+    <label for="new_email">change email?</label>
+    <input type="email"
+           id="new_email"
+           placeholder="email"
+           name="new_email"
+           value="{{ current_user.email }}"
+           required>
+    <label for="password">current password (required):</label>
+    <input type="password"
+           id="old_password"
+           placeholder="enter current password"
+           name="old_password"
+           required>
+    <label for="new_password">change password?</label>
+    <input type="password"
+           id="new_password"
+           placeholder="enter new password"
+           name="new_password" >
+    <button>submit</button>
+</form>
+
+{% endblock %}

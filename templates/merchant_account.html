@@ -3,9 +3,29 @@
 {% block main %}
 
 <h1>Welcome, {{ current_user.name.title() }}!</h1>
-<ul>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="col">
+        <p>{{ messages[0] }}</p>
+    </div>
+    {% endif %}
+{% endwith %}
+<ul class="container col">
     <li>Email: {{ current_user.email }}</li>
-    <li>Member since: {{ current_user.date_joined }}</li>
+    <li>Member since: {{ current_user.date_joined.date() }}</li>
+    <li>
+        <a href=" {{ url_for('merchant_update') }} ">
+            <button>Update account</button>
+        </a>
+        <button onclick="delete_decision()">Delete Account</button>
+    </li>
 </ul>
+<script>
+    function delete_decision() {
+        if (confirm('Are you sure?')) {
+            window.location.href = "{{ url_for('merchant_delete') }}"
+        }
+    }
+</script>
 
 {% endblock %}
