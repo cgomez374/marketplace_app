@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="../static/styles.css">
-    <title>Sell Your Random Stuff</title>
-</head>
-<body>
-    <nav id="nav" class="nav">
-        <ul class="row">
-            <li><a href="{{ url_for('main') }}">Home</a></li>
-            {% if not current_user.is_authenticated %}
-            <li><a href="{{ url_for('login') }}">Merchant Login</a></li>
-            <li><a href="{{ url_for('signup') }}">Merchant Signup</a></li>
-            <li><a href="{{ url_for('cart') }}">Cart</a></li>
-            {% endif %}
-            <!-- HIDE ONCE LOGGED IN     -->
-            {% if current_user.is_authenticated %}
-            <li><a href="{{ url_for('account') }}">Account</a></li>
-            <li><a href="{{ url_for('view_products') }}">Your Products</a></li>
-            <li><a href="{{ url_for('logout') }}">Log Out</a></li>
-            {% endif %}
-            <!--     END       -->
-        </ul>
-    </nav>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="../static/styles.css">
+        <title>Sell Your Random Stuff</title>
+    </head>
+    <body>
+        <nav id="nav" class="nav">
+            <ul class="row">
+                <li><a href="{{ url_for('main') }}">Home</a></li>
+                {% if not current_user.is_authenticated %}
+                <li><a href="{{ url_for('login') }}">Merchant Login</a></li>
+                <li><a href="{{ url_for('signup') }}">Merchant Signup</a></li>
+                <li><a href="{{ url_for('cart') }}">Cart</a></li>
+                {% endif %}
+                <!-- HIDE ONCE LOGGED IN     -->
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('account') }}">Account</a></li>
+                <li><a href="{{ url_for('view_products') }}">Your Products</a></li>
+                <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+                {% endif %}
+                <!--     END       -->
+            </ul>
+        </nav>
 
-    <!--  MAIN CONTENT  -->
-    {% block main %}{% endblock %}
+        <!--  MAIN CONTENT  -->
+        {% block main %}{% endblock %}
 
-</body>
+    </body>
 </html>

@@ -18,7 +18,8 @@
             <label for="sort">Sort:</label>
             <select name="sort_by" id="sort">
                 <option value="">Sort by</option>
-                <option value="price_high">price high</option>
+                <option value="price_high">price: high-low</option>
+                <option value="price_low">price: low-high</option>
             </select>
         </div>
     </div>
@@ -35,45 +36,5 @@
         {% endfor %}
     </ul>
 </main>
-<script>
-    const categoryDropdown = document.getElementById('categories')
-    const sortDropdown = document.getElementById('sort')
-
-    const products = document.querySelectorAll('#products li')
-
-    const prices = []
-
-    products.forEach(product => {
-        prices.push(Number(product.querySelector('#price').innerText.slice(1)))
-    })
-
-    categoryDropdown.addEventListener('change', () => {
-        let category = categoryDropdown.value.toLowerCase()
-
-         products.forEach(product => {
-            if (category){
-                if (!product.innerHTML.includes(category)){
-                    product.style.display = 'none'
-                } else {
-                    product.style.display = 'block'
-                }
-            } else if (!category){
-                product.style.display = 'block'
-            }
-         })
-    })
-
-    sortDropdown.addEventListener('change', () => {
-        let sortBy = sortDropdown.value.toLowerCase()
-        if (sortBy === 'price_high'){
-            prices.sort(function(a, b) {
-                return b - a;
-            });
-            console.log(prices)
-        }
-
-    })
-
-</script>
-
+<script src="../static/scripts/filter.js" ></script>
 {% endblock %}

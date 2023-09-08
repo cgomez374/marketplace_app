@@ -20,12 +20,6 @@
         <button onclick="delete_decision()">Delete Account</button>
     </li>
 </ul>
-<script>
-    function delete_decision() {
-        if (confirm('Are you sure?')) {
-            window.location.href = "{{ url_for('merchant_delete') }}"
-        }
-    }
-</script>
+<script src="../static/scripts/deleteConfirmation.js" ></script>
 
 {% endblock %}
