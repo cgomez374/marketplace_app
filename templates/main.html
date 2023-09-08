@@ -3,17 +3,77 @@
 {% block main %}
 <h1>Sell Your Random Stuff</h1>
 <main class="container col">
-    <ul class="sub-container row">
+    <div id="filters" class="sub-container col" >
+        <div class="sub-container row">
+            <label for="categories">Categories:</label>
+            <select name="categories" id="categories">
+                <option value="">All Items</option>
+                {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+        <div class="sub-container row">
+            <label for="sort">Sort:</label>
+            <select name="sort_by" id="sort">
+                <option value="">Sort by</option>
+                <option value="price_high">price high</option>
+            </select>
+        </div>
+    </div>
+    <ul class="sub-container row" id="products">
         {% for product in products %}
         <li class="col">
             <a href="{{ url_for('product_detail', product_id=product.id) }}">
                 <img src="{{ product['img_url'] }}" alt="product image">
-                <h4>{{ product.name }}</h4>
-                <p>{{ product.price }}</p>
+                <h4>{{ product.name.upper() }}</h4>
+                <p id="category" style="display: none;">{{ product.category }}</p>
+                <p id="price">${{ product.price }}</p>
             </a>
         </li>
         {% endfor %}
     </ul>
 </main>
+<script>
+    const categoryDropdown = document.getElementById('categories')
+    const sortDropdown = document.getElementById('sort')
+
+    const products = document.querySelectorAll('#products li')
+
+    const prices = []
+
+    products.forEach(product => {
+        prices.push(Number(product.querySelector('#price').innerText.slice(1)))
+    })
+
+    categoryDropdown.addEventListener('change', () => {
+        let category = categoryDropdown.value.toLowerCase()
+
+         products.forEach(product => {
+            if (category){
+                if (!product.innerHTML.includes(category)){
+                    product.style.display = 'none'
+                } else {
+                    product.style.display = 'block'
+                }
+            } else if (!category){
+                product.style.display = 'block'
+            }
+         })
+    })
+
+    sortDropdown.addEventListener('change', () => {
+        let sortBy = sortDropdown.value.toLowerCase()
+        if (sortBy === 'price_high'){
+            prices.sort(function(a, b) {
+                return b - a;
+            });
+            console.log(prices)
+        }
+
+    })
+
+</script>
 
 {% endblock %}

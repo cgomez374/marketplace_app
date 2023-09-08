@@ -1,5 +1,5 @@
 import botocore.exceptions
-from flask import Flask, render_template, url_for, request, redirect, flash
+from flask import Flask, render_template, url_for, request, redirect, flash, jsonify
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from models import db, Merchant, Product
 from datetime import datetime
@@ -67,12 +67,16 @@ def delete_object_s3(object_key):
         return False
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def main():
     # db.drop_all()
     # db.create_all()
     products = Product.query.all()
-    return render_template('main.html', products=products)
+    categories = []
+    for product in products:
+        if product.category not in categories:
+            categories.append(product.category)
+    return render_template('main.html', products=products, categories=categories)
 
 
 @app.route('/login', methods=['GET', 'POST'])
