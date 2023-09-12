@@ -4,20 +4,21 @@
 <h1>Product details</h1>
 <div class="container col">
     <div>
-        <img src="{{ product.img_url }}" alt="product image">
+        <img src="{{ product.img_url }}" alt="product image" id="productImg">
     </div>
-    <div class="sub-container col">
-        <h2>{{ product.name }}</h2>
-        <p>{{ product.description }}</p>
-        <h4>price: ${{ product.price }}</h4>
-        <p>seller: {{ product.seller.name }}</p>
+    <div class="sub-container col" id="product">
+        <h2 id="product_name">{{ product.name }}</h2>
+        <p id="product_desc">{{ product.description }}</p>
+        <h4>price: $ <span id="product_price">{{ product.price }}</span></h4>
+        <p id="product_seller">seller: {{ product.seller.name }}</p>
         {% if not current_user.is_authenticated %}
         <div class="row">
-            <button>Add to cart</button>
+            <button onclick="addToCart()">Add to cart</button>
         </div>
         {% endif %}
     </div>
 </div>
+<script src="../static/scripts/cart.js"></script>
 
 
 {% endblock %}

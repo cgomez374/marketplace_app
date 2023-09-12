@@ -132,9 +132,18 @@ def signup():
     return render_template('signup.html')
 
 
-@app.route('/cart')
+@app.route('/cart', methods=['GET', 'POST'])
 def cart():
+    if request.method == 'POST':
+        product_data = request.json
+        products = [[value['name'], value['price']] for key, value in product_data.items()]
+        return jsonify({'message': 'Request processed successfully'}), 200
     return render_template('cart.html')
+
+
+@app.route('/checkout', methods=['GET'])
+def checkout():
+    return render_template('checkout.html')
 
 
 @app.route('/merchant_account')
@@ -279,6 +288,7 @@ def delete_product(product_id):
         print(str(e))
         return display_msg_and_redirect('Error deleting product', 'view_products')
     return display_msg_and_redirect('Delete successful', 'view_products')
+
 
 
 
