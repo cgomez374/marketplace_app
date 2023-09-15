@@ -2,16 +2,16 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../static/styles.css">
         <title>Sell Your Random Stuff</title>
     </head>
     <body>
         <nav id="nav" class="nav">
             <ul class="row">
-                <li><a href="{{ url_for('main') }}">Home</a></li>
+                <li><a href="{{ url_for('main') }}">buy some stuff</a></li>
                 {% if not current_user.is_authenticated %}
-                <li><a href="{{ url_for('login') }}">Merchant Login</a></li>
-                <li><a href="{{ url_for('signup') }}">Merchant Signup</a></li>
+                <li><a href="{{ url_for('login') }}">Sell some stuff</a></li>
                 <li><a href="{{ url_for('cart') }}">Cart</a></li>
                 {% endif %}
                 <!-- HIDE ONCE LOGGED IN     -->
@@ -26,6 +26,5 @@
 
         <!--  MAIN CONTENT  -->
         {% block main %}{% endblock %}
-
     </body>
 </html>

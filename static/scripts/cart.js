@@ -3,13 +3,22 @@
     USING LOCALSTORAGE
 **/
 
-productDiv = document.getElementById('product')
+productDiv = document.getElementById('products')
+emptyCart = {
+    'subtotal': 0,
+    'tax': 0,
+    'total': 0
+}
 
 const showCartItems = () => {
     const productsInCartUl = document.getElementById('productsInCart')
     const localCart = JSON.parse(localStorage.getItem('cart'))
 
-    if (!Object.keys(localCart).length){
+    if (!localCart) {
+        localStorage.setItem('cart', JSON.stringify(emptyCart))
+    }
+
+    if (Object.keys(localCart).length <= 3){
         const newLi = document.createElement('li')
         newLi.setAttribute('class', 'sub-container row')
 
@@ -20,47 +29,49 @@ const showCartItems = () => {
         productsInCartUl.appendChild(newLi)
     } else {
         for(const product in localCart){
-            let name = localCart[product]['name']
-            let price = localCart[product]['price']
-            let image_url = localCart[product]['image_url']
+            if (product !== 'subtotal' && product !== 'tax' && product !== 'total') {
+                let name = localCart[product]['name']
+                let price = localCart[product]['price']
+                let image_url = localCart[product]['image_url']
 
-            // NEW LI
-            const newLi = document.createElement('li')
-            newLi.setAttribute('class', 'sub-container row')
+                // NEW LI
+                const newLi = document.createElement('li')
+                newLi.setAttribute('class', 'row')
 
-            // NEW IMG
-            const newImgEl = document.createElement('img')
-            newImgEl.setAttribute('src', image_url)
-            newImgEl.setAttribute('alt', 'product image')
+                // NEW IMG
+                const newImgEl = document.createElement('img')
+                newImgEl.setAttribute('src', image_url)
+                newImgEl.setAttribute('alt', 'product image')
 
-            // NEW DIV WITH CLASS COL
-            const newDiv = document.createElement('div')
-            newDiv.setAttribute('class', 'col')
+                // NEW DIV WITH CLASS COL
+                const newDiv = document.createElement('div')
+                newDiv.setAttribute('class', 'col')
 
-            // H4 FOR NAME
-            const newH4 = document.createElement('h4')
-            newH4.textContent = name
+                // H4 FOR NAME
+                const newH4 = document.createElement('h4')
+                newH4.textContent = name
 
-            // P FOR PRICE
-            const newPEl = document.createElement('p')
-            newPEl.textContent = 'price: $' + price
+                // P FOR PRICE
+                const newPEl = document.createElement('p')
+                newPEl.textContent = 'price: $' + price
 
-            // DELETE BUTTON
-            const buttonEle = document.createElement('button')
-            buttonEle.setAttribute('id', 'deleteButton')
-            buttonEle.setAttribute('data-customdata', product)
-            buttonEle.setAttribute('onclick', 'deleteFromCart(event)')
-            buttonEle.textContent = 'delete'
+                // DELETE BUTTON
+                const buttonEle = document.createElement('button')
+                buttonEle.setAttribute('id', 'deleteButton')
+                buttonEle.setAttribute('data-customdata', product)
+                buttonEle.setAttribute('onclick', 'deleteFromCart(event)')
+                buttonEle.textContent = 'delete'
 
-            // APPEND THEM ALL TOGETHER
-            newLi.appendChild(newImgEl)
-            newLi.appendChild(newDiv)
-            newDiv.appendChild(newH4)
-            newDiv.appendChild(newPEl)
-            newDiv.appendChild(buttonEle)
+                // APPEND THEM ALL TOGETHER
+                newLi.appendChild(newImgEl)
+                newLi.appendChild(newDiv)
+                newDiv.appendChild(newH4)
+                newDiv.appendChild(newPEl)
+                newDiv.appendChild(buttonEle)
 
-            //APPEND TO THE DOM
-            productsInCartUl.appendChild(newLi)
+                //APPEND TO THE DOM
+                productsInCartUl.appendChild(newLi)
+            }
         }
     }
 
@@ -80,6 +91,10 @@ const addToCart = () => {
     const localCart = JSON.parse(localStorage.getItem('cart'))
     let id = Object.keys(localCart).length + 1
 
+    if (localCart[id]) {
+        id++
+    }
+
     localCart[id] = {
         'name': name,
         'description': description,
@@ -87,12 +102,13 @@ const addToCart = () => {
         'seller': seller,
         'image_url': image_url
     }
+
     localStorage.setItem('cart', JSON.stringify(localCart))
+    setTotal()
 }
 
 const deleteFromCart = (event) => {
     const localCart = JSON.parse(localStorage.getItem('cart'))
-    // GET THE PARENT ELEMENT SOMEHOW
     let itemToRemove = event.target.getAttribute('data-customdata')
 
     for (const product in localCart){
@@ -101,25 +117,39 @@ const deleteFromCart = (event) => {
         }
     }
     localStorage.setItem('cart', JSON.stringify(localCart))
+    setTotal()
     location.reload()
 }
 
-const showCartTotals = () => {
+const setTotal = () => {
     const localCart = JSON.parse(localStorage.getItem('cart'))
     let total = 0
     let tax = 0
     for (let item in localCart){
-        total += parseInt(localCart[item]['price'])
+        if (item !== 'subtotal' && item !== 'tax' && item !== 'total'){
+            total += parseInt(localCart[item]['price'])
+        }
     }
-    tax = total * 0.08
 
+    tax = Math.round(total * 0.08)
+
+    localCart['subtotal'] = total
+    localCart['tax'] = tax
+    localCart['total'] = total + tax
+
+    localStorage.setItem('cart', JSON.stringify(localCart))
+}
+
+const showCartTotals = () => {
+    const localCart = JSON.parse(localStorage.getItem('cart'))
+    console.log(localCart)
     let subTotalEl = document.getElementById('subTotal')
     let taxEl = document.getElementById('tax')
     let totalEl = document.getElementById('total')
 
-    subTotalEl.innerText = total.toString()
-    taxEl.innerText = tax.toString()
-    totalEl.innerText = (total + tax).toString()
+    subTotalEl.innerText = localCart['subtotal']
+    taxEl.innerText = localCart['tax']
+    totalEl.innerText = localCart['total']
 }
 
 // EVENT LISTENERS

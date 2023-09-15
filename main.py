@@ -5,6 +5,13 @@ from models import db, Merchant, Product
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
 import boto3
+import stripe
+import json
+
+# STRIPE
+stripe.api_key = '#'
+STRIPE_PK = '#'
+GOOGLE_MAPS_KEY = '#'
 
 # AWS CREDENTIALS
 AWS_ACCESS_KEY = '#'
@@ -83,17 +90,17 @@ def main():
 def login():
     if request.method == 'POST':
         if request.form:
-            email_to_check = request.form.get('email')
+            email_to_check = request.form.get('email').lower()
             password_to_check = request.form.get('password')
 
             if not email_to_check or not password_to_check:
-                display_msg_and_redirect('Fields cannot be empty', 'login')
+                return display_msg_and_redirect('Fields cannot be empty', 'login')
 
             merchant = Merchant.query.filter_by(email=email_to_check).first()
             if not merchant:
-                display_msg_and_redirect('Merchant not found', 'login')
+                return display_msg_and_redirect('Merchant not found', 'login')
             if not merchant.check_password(password_to_check):
-                display_msg_and_redirect('Email/password incorrect', 'login')
+                return display_msg_and_redirect('Email/password incorrect', 'login')
             # Logs the merchant in
             login_user(merchant)
             return display_msg_and_redirect('Successful login', 'account')
@@ -112,7 +119,7 @@ def signup():
     if request.method == 'POST':
         name = request.form['merchant name'].strip()
         email = request.form['email'].strip()
-        if Merchant.query.filter_by(email=email).first():
+        if Merchant.query.filter_by(email=email.lower()).first():
             return display_msg_and_redirect('Email in use', 'signup')
         new_password = request.form['password'].strip()
 
@@ -120,7 +127,7 @@ def signup():
             display_msg_and_redirect('Fields cannot be empty', 'signup')
 
         date_joined = datetime.today().date()
-        new_merchant = Merchant(name=name, email=email, date_joined=date_joined)
+        new_merchant = Merchant(name=name, email=email.lower(), date_joined=date_joined)
         new_merchant.set_password(new_password)
         try:
             db.session.add(new_merchant)
@@ -141,9 +148,35 @@ def cart():
     return render_template('cart.html')
 
 
+@app.route('/checkout-success', methods=['GET'])
+def checkout_success():
+    return render_template('checkout_success.html')
+
+@app.route('/create-payment-intent', methods=['POST'])
+def create_payment():
+    try:
+        data = json.loads(request.data)
+        # Create a PaymentIntent with the order amount and currency
+        intent = stripe.PaymentIntent.create(
+            amount=data['items'][0]['total'] * 100,
+            currency='usd',
+            # In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+            automatic_payment_methods={
+                'enabled': True,
+            },
+        )
+        return jsonify({
+            'clientSecret': intent['client_secret']
+        })
+    except Exception as e:
+        return jsonify(error=str(e)), 403
+
+
 @app.route('/checkout', methods=['GET'])
 def checkout():
-    return render_template('checkout.html')
+    global STRIPE_PK
+    global GOOGLE_MAPS_KEY
+    return render_template('checkout.html', stripe_pk=STRIPE_PK, google_maps_key=GOOGLE_MAPS_KEY)
 
 
 @app.route('/merchant_account')

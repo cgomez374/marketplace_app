@@ -10,13 +10,15 @@
     </div>
     {% endif %}
 {% endwith %}
-<ul class="container col">
+<ul class="container col sub-background">
     <li>Email: {{ current_user.email }}</li>
     <li>Member since: {{ current_user.date_joined.date() }}</li>
-    <li>
-        <a href=" {{ url_for('merchant_update') }} ">
-            <button>Update account</button>
-        </a>
+    <li class="row" id="buttonGroup">
+        <button>
+            <a href=" {{ url_for('merchant_update') }} ">
+                Update account
+            </a>
+        </button>
         <button onclick="delete_decision()">Delete Account</button>
     </li>
 </ul>

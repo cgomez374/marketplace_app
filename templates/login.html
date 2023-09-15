@@ -11,12 +11,13 @@
     {% endif %}
 {% endwith %}
 
-<form action="#" method="POST" class="form container col">
+<form action="{{ url_for('login') }}" method="POST" class="col" id="loginForm">
     <!--  LOGIN  -->
-    <label for="email">email:</label>
-    <input type="email" placeholder="email" name="email">
-    <label for="password">password:</label>
-    <input type="password" placeholder="password" name="password">
+    <input type="email" placeholder="email" name="email" required>
+    <input type="password" placeholder="password" name="password" required>
+    <div class="">
+        <a href="{{ url_for('signup') }}">sign-up ></a>
+    </div>
     <button>submit</button>
 </form>
 

@@ -3,7 +3,7 @@
 {% block main %}
 
 <h1 onload="">CART</h1>
-<div class="container row">
+<div class="container col">
     <div class="sub-container col" id="cartTotals">
         <p>sub-total: $<span id="subTotal"></span></p>
         <p>tax: $<span id="tax"></span></p>
@@ -11,7 +11,7 @@
         <a href="{{ url_for('checkout') }}"><button>check out</button></a>
          <br />
     </div>
-    <ul class="sub-container col" id="productsInCart">
+    <ul class="products row" id="productsInCart">
         <!--  li's created dynamically      -->
     </ul>
 </div>

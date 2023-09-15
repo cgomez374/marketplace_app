@@ -3,9 +3,8 @@
 {% block main %}
 <h1>Sell Your Random Stuff</h1>
 <main class="container col">
-    <div id="filters" class="sub-container col" >
-        <div class="sub-container row">
-            <label for="categories">Categories:</label>
+    <div id="filters" class="row" >
+        <div class="col">
             <select name="categories" id="categories">
                 <option value="">All Items</option>
                 {% for category in categories %}
@@ -13,9 +12,7 @@
                 {% endfor %}
             </select>
         </div>
-        <br>
-        <div class="sub-container row">
-            <label for="sort">Sort:</label>
+        <div class="col">
             <select name="sort_by" id="sort">
                 <option value="">Sort by</option>
                 <option value="price_high">price: high-low</option>
@@ -23,7 +20,7 @@
             </select>
         </div>
     </div>
-    <ul class="sub-container row" id="products">
+    <ul class="products row" id="products">
         {% for product in products %}
         <li class="col">
             <a href="{{ url_for('product_detail', product_id=product.id) }}">
