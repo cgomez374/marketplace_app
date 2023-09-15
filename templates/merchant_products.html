@@ -14,15 +14,13 @@
     <a href="{{ url_for('new_product') }}"><button>new product</button></a>
     <br>
     {% if merchant_products %}
-    <ul class="sub-container row">
+    <ul class="products row" id="merchantProducts">
         {% for product in merchant_products %}
         <li>
-            <h4>{{ product.name }}</h4>
             <a href="{{ url_for('product_detail', product_id=product.id) }}">
                 <img src="{{ product.img_url }}" alt="product photo">
             </a>
-            <br>
-            <br>
+            <h4>{{ product.name }}</h4>
             <div class="row">
                 <a href="{{ url_for('update_product', product_id=product.id) }}">
                     <button>Update</button>

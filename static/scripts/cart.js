@@ -31,7 +31,8 @@ const showCartItems = () => {
         for(const product in localCart){
             if (product !== 'subtotal' && product !== 'tax' && product !== 'total') {
                 let name = localCart[product]['name']
-                let price = localCart[product]['price']
+                console.log(localCart[product]['price'])
+                let price = parseFloat(localCart[product]['price'])
                 let image_url = localCart[product]['image_url']
 
                 // NEW LI
@@ -53,7 +54,11 @@ const showCartItems = () => {
 
                 // P FOR PRICE
                 const newPEl = document.createElement('p')
-                newPEl.textContent = 'price: $' + price
+                let formattedPrice = price.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
+                newPEl.textContent = 'price: $' + formattedPrice
 
                 // DELETE BUTTON
                 const buttonEle = document.createElement('button')
@@ -83,7 +88,7 @@ const showCartItems = () => {
 const addToCart = () => {
     let name = productDiv.querySelector('#product_name').innerText
     let description = productDiv.querySelector('#product_desc').innerText
-    let price = productDiv.querySelector('#product_price').innerText
+    let price = productDiv.querySelector('#product_price').innerText.replace(/[\$,]/g, '')
     let seller = productDiv.querySelector('#product_seller').innerText
     let image_url = document.getElementById('productImg').src
     let itemsInCartEl = document.getElementById('itemsInCart')
@@ -151,9 +156,18 @@ const showCartTotals = () => {
     let taxEl = document.getElementById('tax')
     let totalEl = document.getElementById('total')
 
-    subTotalEl.innerText = localCart['subtotal']
-    taxEl.innerText = localCart['tax']
-    totalEl.innerText = localCart['total']
+    subTotalEl.innerText = parseInt(localCart['subtotal']).toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
+    taxEl.innerText = parseInt(localCart['tax']).toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
+    totalEl.innerText = parseInt(localCart['total']).toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
 }
 
 // EVENT LISTENERS

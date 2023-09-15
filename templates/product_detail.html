@@ -9,7 +9,7 @@
     <div class="sub-container col" id="product">
         <h2 id="product_name">{{ product.name }}</h2>
         <p id="product_desc">{{ product.description }}</p>
-        <h4>price: $ <span id="product_price">{{ product.price }}</span></h4>
+        <h4>price: $<span id="product_price">{{ locale.format("%.2f", product.price, grouping=True) }}</span></h4>
         <p id="product_seller">seller: {{ product.seller.name }}</p>
         {% if not current_user.is_authenticated %}
         <div class="row">

@@ -19,8 +19,8 @@ const sortByPrice = (comparisonOp) => {
     let next = start + 1
     while (start < products.length - 1) {
         if (products[start].style.display !== 'none' &&  products[next].style.display !== 'none'){
-            let priceStart = Number(products[start].querySelector('#price').innerText.slice(1))
-            let priceNext =  Number(products[next].querySelector('#price').innerText.slice(1))
+            let priceStart = Number(products[start].querySelector('#price').innerText.replace(/[\$,]/g, ''))
+            let priceNext =  Number(products[next].querySelector('#price').innerText.replace(/[\$,]/g, ''))
             if (comparisonOp === '>'){
                 if (priceNext > priceStart){
                     swapItems(start, next)

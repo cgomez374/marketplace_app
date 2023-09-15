@@ -22,14 +22,14 @@
     </div>
     <ul class="products row" id="products">
         {% for product in products %}
-        <li class="col">
-            <a href="{{ url_for('product_detail', product_id=product.id) }}">
+        <a href="{{ url_for('product_detail', product_id=product.id) }}">
+            <li class="col">
                 <img src="{{ product['img_url'] }}" alt="product image">
                 <h4>{{ product.name.upper() }}</h4>
                 <p id="category" style="display: none;">{{ product.category }}</p>
-                <p id="price">${{ "{:.2f}".format(product.price) }}</p>
-            </a>
-        </li>
+                <p id="price">${{ locale.format("%.2f", product.price, grouping=True) }}</p>
+            </li>
+        </a>
         {% endfor %}
     </ul>
 </main>

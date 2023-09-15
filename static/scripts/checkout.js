@@ -103,7 +103,10 @@ async function checkStatus() {
 // Show Order total
 
 const showOrderTotal = () => {
-    document.getElementById('total').innerText = JSON.parse(localStorage.getItem('cart'))['total']
+    document.getElementById('total').innerText = JSON.parse(localStorage.getItem('cart'))['total'].toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
 }
 
 // ------- UI helpers -------

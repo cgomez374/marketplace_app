@@ -7,6 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 import boto3
 import stripe
 import json
+import locale
 
 # STRIPE
 stripe.api_key = '#'
@@ -16,6 +17,9 @@ GOOGLE_MAPS_KEY = '#'
 # AWS CREDENTIALS
 AWS_ACCESS_KEY = '#'
 AWS_SECRET_KEY = '#'
+
+# Set the locale to the user's default for comma formatting
+locale.setlocale(locale.LC_ALL, '')
 
 S3_CLIENT = boto3.client("s3",
                          aws_access_key_id=AWS_ACCESS_KEY,
@@ -83,7 +87,7 @@ def main():
     for product in products:
         if product.category not in categories:
             categories.append(product.category)
-    return render_template('main.html', products=products, categories=categories)
+    return render_template('main.html', products=products, categories=categories, locale=locale)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -145,12 +149,13 @@ def cart():
         product_data = request.json
         products = [[value['name'], value['price']] for key, value in product_data.items()]
         return jsonify({'message': 'Request processed successfully'}), 200
-    return render_template('cart.html')
+    return render_template('cart.html', locale=locale)
 
 
 @app.route('/checkout-success', methods=['GET'])
 def checkout_success():
     return render_template('checkout_success.html')
+
 
 @app.route('/create-payment-intent', methods=['POST'])
 def create_payment():
@@ -270,7 +275,7 @@ def product_detail(product_id):
     product = Product.query.filter_by(id=product_id).first()
     if not product:
         return display_msg_and_redirect('Product not found', 'main')
-    return render_template('product_detail.html', product=product)
+    return render_template('product_detail.html', product=product, locale=locale)
 
 
 @app.route('/update/<int:product_id>', methods=['GET', 'POST'])
