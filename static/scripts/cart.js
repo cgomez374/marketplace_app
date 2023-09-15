@@ -10,6 +10,14 @@ emptyCart = {
     'total': 0
 }
 
+const checkOutButton = () => {
+    if (Object.keys(JSON.parse(localStorage.getItem('cart'))).length <= 3){
+        document.getElementById('checkOutButton').disabled = 'False'
+    } else if (Object.keys(JSON.parse(localStorage.getItem('cart'))).length > 3){
+        document.getElementById('checkOutButton').disabled = 'True'
+    }
+}
+
 const showCartItems = () => {
     const productsInCartUl = document.getElementById('productsInCart')
     const localCart = JSON.parse(localStorage.getItem('cart'))
@@ -31,7 +39,7 @@ const showCartItems = () => {
         for(const product in localCart){
             if (product !== 'subtotal' && product !== 'tax' && product !== 'total') {
                 let name = localCart[product]['name']
-                console.log(localCart[product]['price'])
+
                 let price = parseFloat(localCart[product]['price'])
                 let image_url = localCart[product]['image_url']
 
@@ -83,6 +91,7 @@ const showCartItems = () => {
     }
 
     showCartTotals()
+    // checkOutButton()
 }
 
 const addToCart = () => {
@@ -172,4 +181,10 @@ const showCartTotals = () => {
 
 // EVENT LISTENERS
 document.addEventListener('DOMContentLoaded', showCartItems)
+
+if (Object.keys(JSON.parse(localStorage.getItem('cart'))).length <= 3){
+    document.getElementById('checkOutButton').disabled = true
+} else if (Object.keys(JSON.parse(localStorage.getItem('cart'))).length > 3){
+    document.getElementById('checkOutButton').disabled = false
+}
 

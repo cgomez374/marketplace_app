@@ -2,20 +2,19 @@
 
 {% block main %}
 
-<h1 onload="">CART</h1>
-<div class="container col">
+<h1>CART</h1>
+<div class="container col" id="cart">
     <div class="sub-container col" id="cartTotals">
         <p>sub-total: $<span id="subTotal"></span></p>
         <p>tax: $<span id="tax"></span></p>
         <p>total: $<span id="total"></span></p>
-        <a href="{{ url_for('checkout') }}"><button>check out</button></a>
+        <a href="{{ url_for('checkout') }}"><button id="checkOutButton">check out</button></a>
          <br />
     </div>
     <ul class="products row" id="productsInCart">
         <!--  li's created dynamically      -->
     </ul>
 </div>
-
 <script src="../static/scripts/cart.js"></script>
 
 

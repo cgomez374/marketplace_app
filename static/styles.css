@@ -6,7 +6,7 @@
     box-sizing: border-box;
 }
 :root {
-  --colorPrimary: #7fb4f0;
+  --colorPrimary: #7fff00;
 }
 
 body {
@@ -34,7 +34,7 @@ a {
 
 img {
     width: 100%;
-    height: 70%;
+    height: 76%;
     object-fit: cover; /* Crop and center the image */
     object-position: center; /* Center the image horizontally and vertically */
 }
@@ -79,14 +79,9 @@ p {
 }
 
 #merchantProducts li {
-    height: 40vh;
+    height: 42vh;
 }
-/*
-.sub-container img {
-    width: 50%;
-    height: 50%;
-}
-*/
+
 .sub-background {
     background-color: #222831;
 }
@@ -107,12 +102,18 @@ p {
 }
 
 #filters select, #filters option {
+    background-color: #222831;
     width: 35vh;
     height: 3.5vh;
     font-size: 14px;
     font-family: 'Quicksand', sans-serif;
     text-transform: capitalize;
+    color: #eeeeee;
+    outline: none;
+    border: 2px solid #222831;
     margin: 2vh;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+
 }
 
 #filters select:focus {
@@ -132,9 +133,22 @@ p {
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
+#cart {
+    height: auto;
+}
+
+#productsInCart {
+    width: 70%;
+}
+
+
 #productsInCart li {
     width: 25vh;
     height: 30vh;
+}
+
+#cartTotals {
+    width: 40vh;
 }
 
 #productsInCart img {
@@ -185,15 +199,15 @@ p {
 
 #itemsInCart {
     position: absolute;
-    top: -8px; /* Adjust the top position for vertical alignment */
-    right: -8px; /* Adjust the right position for horizontal alignment */
+    top: -8px;
+    right: -8px;
     background-color: red;
     color: white;
     border-radius: 50%;
-    padding: 4px 8px; /* Adjust padding for a smaller circle */
-    font-size: 12px; /* Adjust font size for smaller text */
-    width: 14px; /* Adjust width to make the circle smaller */
-    height: 14px; /* Adjust height to make the circle smaller */
+    padding: 4px 8px;
+    font-size: 12px;
+    width: 14px;
+    height: 14px;
 }
 
 form {
@@ -205,6 +219,7 @@ form {
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
     border-radius: 7px;
     padding: 40px;
+    color: #eeeeee;
 }
 
 form a {
@@ -230,20 +245,22 @@ form a {
   border-radius: 6px;
   margin: 16px 0;
   padding: 12px;
-  border: 1px solid #E0E6EB;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(18, 42, 66, 0.02);
+  border: 1px solid #424353;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5), 0px 1px 6px rgba(0, 0, 0, 0.25);
   max-height: 44px;
   font-size: 16px;
   width: 100%;
-  background: #ffffff;
+  background: #30313d;
   text-transform: lowercase;
   font-family: 'Quicksand', sans-serif;
+  color: #eeeeee;
 }
 
 #email:focus, input:focus {
     outline: none;
-    border-color: #E0E6EB;
-    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(18, 42, 66, 0.02), 0 0 0 2px var(--colorPrimary);
+    border-color: #006400;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(18, 42, 66, 0.02),
+                0 0 0 2px #7fff00;
 }
 
 input::placeholder {

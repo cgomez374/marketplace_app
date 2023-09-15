@@ -16,7 +16,7 @@ async function initialize() {
   const { clientSecret } = await response.json();
 
   const appearance = {
-    theme: 'stripe',
+    theme: 'night',
   };
   elements = stripe.elements({ appearance, clientSecret });
 
@@ -123,7 +123,7 @@ function showMessage(messageText) {
   }, 4000);
 }
 
-// Show a spinner on payment submission
+ //Show a spinner on payment submission
 function setLoading(isLoading) {
   if (isLoading) {
     // Disable the button and show a spinner
@@ -137,9 +137,14 @@ function setLoading(isLoading) {
   }
 }
 
-initialize();
-showOrderTotal()
-checkStatus();
+if (Object.keys(JSON.parse(localStorage.getItem('cart'))).length > 3){
+    initialize();
+    document.getElementById('submit').disabled = false
+    checkStatus();
+} else {
+    document.getElementById('submit').disabled = true
+}
+showOrderTotal();
 
 document
   .querySelector("#payment-form")

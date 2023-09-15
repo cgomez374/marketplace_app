@@ -2,11 +2,14 @@
 
 {% block main %}
 <!-- Display a payment form success -->
-<div class="container">
-    <p>your payment succeeded!</p>
+<div class="sub-container col">
+    <h4>your payment succeeded!</h4>
+    <h4>your order has been placed!</h4>
+    <h4>Soon you will receive a confirmation email!</h4>
 </div>
 
 <script src="https://js.stripe.com/v3/"></script>
+<script src="../static/scripts/paymentSuccess.js"></script>
 
 
 {% endblock %}
