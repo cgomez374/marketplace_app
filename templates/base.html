@@ -12,7 +12,11 @@
                 <li><a href="{{ url_for('main') }}">buy some stuff</a></li>
                 {% if not current_user.is_authenticated %}
                 <li><a href="{{ url_for('login') }}">Sell some stuff</a></li>
-                <li><a href="{{ url_for('cart') }}">Cart</a></li>
+<!--                <li><a href="{{ url_for('cart') }}">Cart</a></li>-->
+                <li id="cart-icon">
+                    <a href="{{ url_for('cart') }}"><i class="fas fa-shopping-cart"></i></a>
+                    <span class="hidden" id="itemsInCart"></span>
+                </li>
                 {% endif %}
                 <!-- HIDE ONCE LOGGED IN     -->
                 {% if current_user.is_authenticated %}
@@ -27,4 +31,10 @@
         <!--  MAIN CONTENT  -->
         {% block main %}{% endblock %}
     </body>
+    <script src="https://kit.fontawesome.com/37a1aff8cb.js" crossorigin="anonymous"></script>
+    <script>
+        if (Object.keys(JSON.parse(localStorage.getItem('cart'))).length > 3){
+            document.getElementById('itemsInCart').classList.remove('hidden')
+        }
+    </script>
 </html>

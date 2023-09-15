@@ -3,7 +3,7 @@
     USING LOCALSTORAGE
 **/
 
-productDiv = document.getElementById('products')
+productDiv = document.getElementById('productDetails')
 emptyCart = {
     'subtotal': 0,
     'tax': 0,
@@ -73,6 +73,8 @@ const showCartItems = () => {
                 productsInCartUl.appendChild(newLi)
             }
         }
+
+        document.getElementById('itemsInCart').classList.remove('hidden')
     }
 
     showCartTotals()
@@ -84,6 +86,7 @@ const addToCart = () => {
     let price = productDiv.querySelector('#product_price').innerText
     let seller = productDiv.querySelector('#product_seller').innerText
     let image_url = document.getElementById('productImg').src
+    let itemsInCartEl = document.getElementById('itemsInCart')
 
     if (!JSON.parse(localStorage.getItem('cart'))) {
         localStorage.setItem('cart', JSON.stringify({}))
@@ -94,6 +97,8 @@ const addToCart = () => {
     if (localCart[id]) {
         id++
     }
+
+    itemsInCartEl.classList.remove('hidden')
 
     localCart[id] = {
         'name': name,
@@ -142,7 +147,6 @@ const setTotal = () => {
 
 const showCartTotals = () => {
     const localCart = JSON.parse(localStorage.getItem('cart'))
-    console.log(localCart)
     let subTotalEl = document.getElementById('subTotal')
     let taxEl = document.getElementById('tax')
     let totalEl = document.getElementById('total')

@@ -27,7 +27,7 @@
                 <img src="{{ product['img_url'] }}" alt="product image">
                 <h4>{{ product.name.upper() }}</h4>
                 <p id="category" style="display: none;">{{ product.category }}</p>
-                <p id="price">${{ product.price }}</p>
+                <p id="price">${{ "{:.2f}".format(product.price) }}</p>
             </a>
         </li>
         {% endfor %}
