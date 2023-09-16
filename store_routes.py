@@ -4,12 +4,13 @@ from models import Product
 import stripe
 import json
 import locale
+import os
 
 
 # STRIPE
-stripe.api_key = '#'
-STRIPE_PK = '#'
-GOOGLE_MAPS_KEY = '#'
+stripe.api_key = os.getenv('STRIPE_API_KEY')
+STRIPE_PK = os.getenv('STRIPE_PK_KEY')
+GOOGLE_MAPS_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
 
 
 @app.route('/', methods=['GET'])
