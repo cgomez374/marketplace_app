@@ -8,9 +8,9 @@ import os
 
 
 # STRIPE
-stripe.api_key = os.getenv('STRIPE_API_KEY')
-STRIPE_PK = os.getenv('STRIPE_PK_KEY')
-GOOGLE_MAPS_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
+stripe.api_key = str(os.getenv('STRIPE_SK'))
+STRIPE_PK = str(os.getenv('STRIPE_PK'))
+GOOGLE_MAPS_KEY = str(os.getenv('GOOGLE_API_KEY'))
 
 
 @app.route('/', methods=['GET'])

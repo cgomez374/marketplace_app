@@ -20,78 +20,77 @@ const checkOutButton = () => {
 
 const showCartItems = () => {
     const productsInCartUl = document.getElementById('productsInCart')
-    const localCart = JSON.parse(localStorage.getItem('cart'))
+    if (productsInCartUl){
+        const localCart = JSON.parse(localStorage.getItem('cart'))
 
-    if (!localCart) {
-        localStorage.setItem('cart', JSON.stringify(emptyCart))
-    }
-
-    if (Object.keys(localCart).length <= 3){
-        const newLi = document.createElement('li')
-        newLi.setAttribute('class', 'sub-container row')
-
-        const newH3 = document.createElement('h3')
-        newH3.textContent = '- Empty Cart -'
-
-        newLi.appendChild(newH3)
-        productsInCartUl.appendChild(newLi)
-    } else {
-        for(const product in localCart){
-            if (product !== 'subtotal' && product !== 'tax' && product !== 'total') {
-                let name = localCart[product]['name']
-
-                let price = parseFloat(localCart[product]['price'])
-                let image_url = localCart[product]['image_url']
-
-                // NEW LI
-                const newLi = document.createElement('li')
-                newLi.setAttribute('class', 'row')
-
-                // NEW IMG
-                const newImgEl = document.createElement('img')
-                newImgEl.setAttribute('src', image_url)
-                newImgEl.setAttribute('alt', 'product image')
-
-                // NEW DIV WITH CLASS COL
-                const newDiv = document.createElement('div')
-                newDiv.setAttribute('class', 'col')
-
-                // H4 FOR NAME
-                const newH4 = document.createElement('h4')
-                newH4.textContent = name
-
-                // P FOR PRICE
-                const newPEl = document.createElement('p')
-                let formattedPrice = price.toLocaleString("en-US", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                });
-                newPEl.textContent = 'price: $' + formattedPrice
-
-                // DELETE BUTTON
-                const buttonEle = document.createElement('button')
-                buttonEle.setAttribute('id', 'deleteButton')
-                buttonEle.setAttribute('data-customdata', product)
-                buttonEle.setAttribute('onclick', 'deleteFromCart(event)')
-                buttonEle.textContent = 'delete'
-
-                // APPEND THEM ALL TOGETHER
-                newLi.appendChild(newImgEl)
-                newLi.appendChild(newDiv)
-                newDiv.appendChild(newH4)
-                newDiv.appendChild(newPEl)
-                newDiv.appendChild(buttonEle)
-
-                //APPEND TO THE DOM
-                productsInCartUl.appendChild(newLi)
-            }
+        if (!localCart) {
+            localStorage.setItem('cart', JSON.stringify(emptyCart))
         }
 
-        document.getElementById('itemsInCart').classList.remove('hidden')
-    }
+        if (Object.keys(localCart).length <= 3){
+            const newLi = document.createElement('li')
+            newLi.setAttribute('class', 'sub-container row')
 
-    showCartTotals()
-    // checkOutButton()
+            const newH3 = document.createElement('h3')
+            newH3.textContent = '- Empty Cart -'
+
+            newLi.appendChild(newH3)
+            productsInCartUl.appendChild(newLi)
+        } else {
+            for(const product in localCart){
+                if (product !== 'subtotal' && product !== 'tax' && product !== 'total') {
+                    let name = localCart[product]['name']
+
+                    let price = parseFloat(localCart[product]['price'])
+                    let image_url = localCart[product]['image_url']
+
+                    // NEW LI
+                    const newLi = document.createElement('li')
+                    newLi.setAttribute('class', 'row')
+
+                    // NEW IMG
+                    const newImgEl = document.createElement('img')
+                    newImgEl.setAttribute('src', image_url)
+                    newImgEl.setAttribute('alt', 'product image')
+
+                    // NEW DIV WITH CLASS COL
+                    const newDiv = document.createElement('div')
+                    newDiv.setAttribute('class', 'col')
+
+                    // H4 FOR NAME
+                    const newH4 = document.createElement('h4')
+                    newH4.textContent = name
+
+                    // P FOR PRICE
+                    const newPEl = document.createElement('p')
+                    let formattedPrice = price.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    });
+                    newPEl.textContent = 'price: $' + formattedPrice
+
+                    // DELETE BUTTON
+                    const buttonEle = document.createElement('button')
+                    buttonEle.setAttribute('id', 'deleteButton')
+                    buttonEle.setAttribute('data-customdata', product)
+                    buttonEle.setAttribute('onclick', 'deleteFromCart(event)')
+                    buttonEle.textContent = 'delete'
+
+                    // APPEND THEM ALL TOGETHER
+                    newLi.appendChild(newImgEl)
+                    newLi.appendChild(newDiv)
+                    newDiv.appendChild(newH4)
+                    newDiv.appendChild(newPEl)
+                    newDiv.appendChild(buttonEle)
+
+                    //APPEND TO THE DOM
+                    productsInCartUl.appendChild(newLi)
+                }
+            }
+            document.getElementById('itemsInCart').classList.remove('hidden')
+        }
+        showCartTotals()
+    }
 }
 
 const addToCart = () => {
@@ -183,8 +182,12 @@ const showCartTotals = () => {
 document.addEventListener('DOMContentLoaded', showCartItems)
 
 if (Object.keys(JSON.parse(localStorage.getItem('cart'))).length <= 3){
-    document.getElementById('checkOutButton').disabled = true
+    if (document.getElementById('checkOutButton')){
+        document.getElementById('checkOutButton').disabled = true
+    }
 } else if (Object.keys(JSON.parse(localStorage.getItem('cart'))).length > 3){
-    document.getElementById('checkOutButton').disabled = false
+    if (document.getElementById('checkOutButton')){
+        document.getElementById('checkOutButton').disabled = false
+    }
 }
 

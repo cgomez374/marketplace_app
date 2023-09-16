@@ -10,8 +10,13 @@ const products = document.querySelectorAll('#products li')
 
 const swapItems = (start, next) => {
     let temp = products[next].innerHTML
+    let tempAEl = products[next].parentNode.href
+
     products[next].innerHTML = products[start].innerHTML
+    products[next].parentNode.href = products[start].parentNode.href
+
     products[start].innerHTML = temp
+    products[start].parentNode.href = tempAEl
 }
 
 const sortByPrice = (comparisonOp) => {

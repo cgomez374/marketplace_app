@@ -78,8 +78,13 @@ p {
     padding: 2vh;
 }
 
+#merchantProducts img {
+    width: 100%;
+    height: 65%;
+}
+
 #merchantProducts li {
-    height: 42vh;
+    height: 40vh;
 }
 
 .sub-background {

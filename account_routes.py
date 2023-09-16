@@ -125,7 +125,6 @@ def new_product():
                 return display_msg_and_redirect('Product name already exists', 'new_product')
         if product_img:
             image_url = upload_to_s3(product_img)
-            # image_url = 'https://marketplace-product-images-bucket.s3.amazonaws.com/android.jpg'
         if not image_url:
             return display_msg_and_redirect('File name must be unique', 'new_product')
         elif product_name and product_price and product_category and product_desc:
