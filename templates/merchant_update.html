@@ -19,11 +19,15 @@
            name="new_email"
            value="{{ current_user.email }}"
            required>
-    <label for="password">current password (required):</label>
+    <label for="old_password">current password (required):</label>
     <input type="password"
            id="old_password"
            placeholder="enter current password"
            name="old_password"
+           minlength="8"
+           maxlength="16"
+           pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+           title="Letters (capital and lower), numbers, and 8 min characters"
            required>
     <label for="new_password">change password?</label>
     <input type="password"

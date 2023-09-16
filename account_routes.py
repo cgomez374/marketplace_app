@@ -5,6 +5,7 @@ from models import db, Merchant, Product
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
 from s3 import upload_to_s3, delete_object_s3
+import re
 
 
 @app.route('/merchant_account')
@@ -50,8 +51,12 @@ def signup():
             return display_msg_and_redirect('Email in use', 'signup')
         new_password = request.form['password'].strip()
 
+        # PATTERN MATCHING
+        pattern = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$'
+        if not re.match(pattern, new_password) or len(new_password) < 8 or len(new_password) > 16:
+            return display_msg_and_redirect('Password not strong enough', 'signup')
         if not name or not email or not new_password:
-            display_msg_and_redirect('Fields cannot be empty', 'signup')
+            return display_msg_and_redirect('Fields cannot be empty', 'signup')
 
         date_joined = datetime.today().date()
         new_merchant = Merchant(name=name, email=email.lower(), date_joined=date_joined)
@@ -61,7 +66,7 @@ def signup():
             db.session.commit()
         except SQLAlchemyError as e:
             db.session.rollback()
-            display_msg_and_redirect(e, 'signup')
+            return display_msg_and_redirect(e, 'signup')
         return display_msg_and_redirect('Account Successfully created', 'login')
     return render_template('signup.html')
 
@@ -79,6 +84,10 @@ def merchant_update():
         if new_email:
             current_user.email = new_email
         if new_pass:
+            # PATTERN MATCHING
+            pattern = r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$'
+            if not re.match(pattern, new_pass) or len(new_pass) < 8 or len(new_pass) > 16:
+                return display_msg_and_redirect('Password not strong enough', 'merchant_update')
             current_user.set_password(new_password=new_pass)
         try:
             db.session.commit()

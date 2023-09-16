@@ -5,18 +5,25 @@
 <h1>SIGNUP</h1>
 
 {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <div class="col">
-        <p>{{ messages[0] }}</p>
-    </div>
-    {% endif %}
+{% if messages %}
+<div class="col">
+    <p>{{ messages[0] }}</p>
+</div>
+{% endif %}
 {% endwith %}
 
 <form action="{{ url_for('signup') }}" method="POST" class="col">
     <!--  SIGNUP  -->
     <input type="text" placeholder="full name" name="merchant name" required>
     <input type="email" placeholder="email" name="email" required>
-    <input type="password" placeholder="password" name="password" required>
+    <input type="password"
+           placeholder="password"
+           name="password"
+           minlength="8"
+           maxlength="16"
+           pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+           title="Letters (capital and lower), numbers, and 8 min characters"
+           required>
     <button>submit</button>
 </form>
 

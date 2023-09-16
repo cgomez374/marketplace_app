@@ -94,6 +94,7 @@ const showCartItems = () => {
 }
 
 const addToCart = () => {
+    let addToCartBtn = document.getElementById('addToCartBtn')
     let name = productDiv.querySelector('#product_name').innerText
     let description = productDiv.querySelector('#product_desc').innerText
     let price = productDiv.querySelector('#product_price').innerText.replace(/[\$,]/g, '')
@@ -123,6 +124,16 @@ const addToCart = () => {
 
     localStorage.setItem('cart', JSON.stringify(localCart))
     setTotal()
+
+    // CHANGE INNER TEXT OF BUTTON
+    addToCartBtn.innerText = 'Added!'
+    addToCartBtn.classList.add('green')
+
+    setTimeout(() => {
+        addToCartBtn.innerText = 'Add to cart'
+        addToCartBtn.classList.remove('green')
+    }, 1000)
+
 }
 
 const deleteFromCart = (event) => {

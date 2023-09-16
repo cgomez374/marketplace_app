@@ -17,6 +17,19 @@ async function initialize() {
 
   const appearance = {
     theme: 'night',
+    variables : {
+        colorPrimary: '#0092ca'
+    },
+    rules: {
+        'Input': {
+            fontFamily: 'Quicksand, sans-serif',
+            colorText: '#eeeeee',
+            colorTextPlaceholder: '#eeeeee'
+        },
+        '.Input:focus': {
+            boxShadow: '0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(18, 42, 66, 0.02), 0 0 0px 1px #0092ca'
+        }
+    }
   };
   elements = stripe.elements({ appearance, clientSecret });
 

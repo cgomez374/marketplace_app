@@ -64,6 +64,11 @@ p {
     align-items: center;
 }
 
+.green {
+    background-color: #00853E;
+    color: white;
+}
+
 .container {
     width: 90%;
     height: auto;
@@ -118,7 +123,6 @@ p {
     border: 2px solid #222831;
     margin: 2vh;
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
-
 }
 
 #filters select:focus {
@@ -135,21 +139,15 @@ p {
 }
 
 .products li:hover {
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    box-shadow: rgba(0, 146, 202, 0.25) 0px 54px 55px, rgba(0, 146, 202, 0.12) 0px -12px 30px, rgba(0, 146, 202, 0.12) 0px 4px 6px, rgba(0, 146, 202, 0.17) 0px 12px 13px, rgba(0, 146, 202, 0.09) 0px -3px 5px;
 }
 
 #cart {
     height: auto;
 }
 
-#productsInCart {
-    width: 70%;
-}
-
-
 #productsInCart li {
-    width: 25vh;
-    height: 30vh;
+    margin: 1vh;
 }
 
 #cartTotals {
@@ -261,15 +259,16 @@ form a {
   color: #eeeeee;
 }
 
-#email:focus, input:focus {
+#payment-form input:focus, input:focus, #address-element:focus-within {
     outline: none;
-    border-color: #006400;
+    border-color: #0092ca;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(18, 42, 66, 0.02),
-                0 0 0 2px #7fff00;
+                0 0 0px 1px #0092ca;
 }
 
 input::placeholder {
     text-transform: capitalize;
+    color: #eeeeee;
 }
 
 #payment-message {

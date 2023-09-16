@@ -1,6 +1,8 @@
 from main import app, display_msg_and_redirect
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, abort
+from flask_login import current_user
 from models import Product
+from functools import wraps
 import stripe
 import json
 import locale
@@ -11,6 +13,16 @@ import os
 stripe.api_key = str(os.getenv('STRIPE_SK'))
 STRIPE_PK = str(os.getenv('STRIPE_PK'))
 GOOGLE_MAPS_KEY = str(os.getenv('GOOGLE_API_KEY'))
+
+
+def logged_out_users_only(function):
+    @wraps(function)
+    def wrapper(*args, **kwargs):
+        if request.method == 'GET':
+            if current_user.is_authenticated:
+                return render_template('unauthorized_access.html')
+        return function(*args, **kwargs)
+    return wrapper
 
 
 @app.route('/', methods=['GET'])
@@ -34,6 +46,7 @@ def product_detail(product_id):
 
 
 @app.route('/cart', methods=['GET', 'POST'])
+@logged_out_users_only
 def cart():
     if request.method == 'POST':
         product_data = request.json
@@ -43,11 +56,13 @@ def cart():
 
 
 @app.route('/checkout-success', methods=['GET'])
+@logged_out_users_only
 def checkout_success():
     return render_template('checkout_success.html')
 
 
 @app.route('/create-payment-intent', methods=['POST'])
+@logged_out_users_only
 def create_payment():
     try:
         data = json.loads(request.data)
@@ -67,6 +82,7 @@ def create_payment():
 
 
 @app.route('/checkout', methods=['GET'])
+@logged_out_users_only
 def checkout():
     global STRIPE_PK
     global GOOGLE_MAPS_KEY

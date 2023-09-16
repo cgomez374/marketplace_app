@@ -13,7 +13,7 @@
         <p id="product_seller">seller: {{ product.seller.name }}</p>
         {% if not current_user.is_authenticated %}
         <div class="row">
-            <button onclick="addToCart()">Add to cart</button>
+            <button id="addToCartBtn" onclick="addToCart()">Add to cart</button>
         </div>
         {% endif %}
     </div>
