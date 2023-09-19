@@ -3,8 +3,8 @@ from flask_login import current_user
 import os
 
 # AWS CREDENTIALS
-AWS_ACCESS_KEY = str(os.getenv('AWS_AK'))
-AWS_SECRET_KEY = str(os.getenv('AWS_SK'))
+AWS_ACCESS_KEY = str(os.getenv('ACCESS_KEY'))
+AWS_SECRET_KEY = str(os.getenv('SECRET_KEY'))
 S3_CLIENT = boto3.client("s3",
                          aws_access_key_id=AWS_ACCESS_KEY,
                          aws_secret_access_key=AWS_SECRET_KEY)
